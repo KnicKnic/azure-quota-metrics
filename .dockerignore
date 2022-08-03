@@ -1,0 +1,7 @@
+.dockerignore
+Dockerfile
+metrics/bin/**
+metrics/obj/**
+secrets/**
+LICENSE
+README.md
