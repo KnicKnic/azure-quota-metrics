@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.Metrics;
+﻿using System.Runtime.InteropServices;
+using McMaster.Extensions.CommandLineUtils;
+using System.Diagnostics.Metrics;
 using Azure.Identity;
 using Azure.ResourceManager;
 using Azure.ResourceManager.Resources;
@@ -15,15 +17,11 @@ using Serilog.Extensions.Logging;
 using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
 using System.ComponentModel.DataAnnotations;
 using Azure.Core;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Hosting;
 
-
-
-
-
-class Program
+public class Program
 {
-    public static int Main(string[] args) => CommandLineApplication.Execute<Program>(args);
-
     [Option]
     public string[] Name { get; set; } = { "localhost", "127.0.0.1" };
     [Option]
@@ -34,6 +32,8 @@ class Program
 
     [Option]
     public string Location { get; set; } = "EastUS";
+
+    public static int Main(string[] args) => CommandLineApplication.Execute<Program>(args);
 
     public void OnExecute()
     {
@@ -74,18 +74,43 @@ class Program
                 .AddMeter(storagePageMeter.Name)
                 .AddPrometheusExporter(opt =>
                 {
-                    opt.StartHttpListener = true;
-                    opt.HttpListenerPrefixes = this.Name.Select(name => $"http://" + name + ":" + this.Port + "/").ToArray();
+                    //opt.StartHttpListener = true;
+                    //opt.HttpListenerPrefixes = this.Name.Select(name => $"http://" + name + ":" + this.Port + "/").ToArray();                        //opt.StartHttpListener = true;
+                    //opt.HttpListenerPrefixes = this.Name.Select(name => $"http://" + name + ":" + this.Port + "/").ToArray();
                 })
                 .Build();
 
-        Console.WriteLine("Press any key to exit");
-        while (!Console.KeyAvailable)
+
+        var builder = WebApplication.CreateBuilder();
+
+        // Add services to the container.
+
+        builder.Services.AddControllers();
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+        builder.Services.AddSingleton(meterProvider);
+
+        var app = builder.Build();
+
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
         {
-            Thread.Sleep(1000);
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
 
-        return;
+
+        app.UseOpenTelemetryPrometheusScrapingEndpoint();
+        app.UseAuthorization();
+
+        //app.UseEndpoints(endpoints =>
+        //{
+        //    endpoints.MapControllers();
+        //});
+
+        app.MapControllers();
+
+        app.Run();
     }
 }
-

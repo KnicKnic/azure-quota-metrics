@@ -33,6 +33,6 @@ RUN tdnf install curl tar -y && \
 WORKDIR /app
 COPY --from=build /build .
 
-ENTRYPOINT ["/app/metrics"]
+ENTRYPOINT ["dotnet", "/app/metrics.dll"]
 
 EXPOSE 9184
