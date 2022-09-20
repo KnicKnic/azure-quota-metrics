@@ -6,7 +6,6 @@ using Azure.ResourceManager;
 using Azure.ResourceManager.Resources;
 using Azure.ResourceManager.Reservations;
 using Microsoft.Azure.Management.Quota;
-using McMaster.Extensions.CommandLineUtils;
 //using Microsoft.Azure.Management.Reservations;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
@@ -60,28 +59,14 @@ public class Program
         using var log = new LoggerConfiguration()
             .WriteTo.Console()
             .CreateLogger();
+        
+        
 
-        using var computePageMeter = new ComputePageMeter(new SerilogLoggerFactory(log).CreateLogger<ComputePageMeter>(), subscriptions, location);
-        using var storagePageMeter = new StoragePageMeter(new SerilogLoggerFactory(log).CreateLogger<StoragePageMeter>(), subscriptions, location);
-        using var NetworkPageMeter = new NetworkPageMeter(new SerilogLoggerFactory(log).CreateLogger<NetworkPageMeter>(), subscriptions, location);
-
-        //foreach( var page in computePageMeter.GetQuotas())
-        //{
-        //    Console.WriteLine(page.Value);
-        //}
-        using MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
-                .AddMeter(computePageMeter.Name)
-                .AddMeter(storagePageMeter.Name)
-                .AddPrometheusExporter(opt =>
-                {
-                    //opt.StartHttpListener = true;
-                    //opt.HttpListenerPrefixes = this.Name.Select(name => $"http://" + name + ":" + this.Port + "/").ToArray();                        //opt.StartHttpListener = true;
-                    //opt.HttpListenerPrefixes = this.Name.Select(name => $"http://" + name + ":" + this.Port + "/").ToArray();
-                })
-                .Build();
 
 
         var builder = WebApplication.CreateBuilder();
+
+
 
         // Add services to the container.
 
@@ -89,6 +74,24 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+
+        //builder.Services.AddSingleton(ComputePageMeter)
+        var ilogger = new SerilogLoggerFactory(log).CreateLogger<ComputeMeter>();
+        var azureContext = new AzureContext(subscriptions, Location);
+        builder.Services.AddSingleton(azureContext);
+
+        using var computePageMeter = new ComputeMeter(new SerilogLoggerFactory(log).CreateLogger<ComputeMeter>(), azureContext);
+        using var storagePageMeter = new StorageMeter(new SerilogLoggerFactory(log).CreateLogger<StorageMeter>(), azureContext);
+        using var networkPageMeter = new NetworkMeter(new SerilogLoggerFactory(log).CreateLogger<NetworkMeter>(), azureContext);
+
+        using MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
+                .AddMeter(computePageMeter.Name)
+                .AddMeter(storagePageMeter.Name)
+                .AddMeter(networkPageMeter.Name)
+                .AddPrometheusExporter()
+                .Build();
+
         builder.Services.AddSingleton(meterProvider);
 
         var app = builder.Build();
@@ -100,14 +103,8 @@ public class Program
             app.UseSwaggerUI();
         }
 
-
         app.UseOpenTelemetryPrometheusScrapingEndpoint();
         app.UseAuthorization();
-
-        //app.UseEndpoints(endpoints =>
-        //{
-        //    endpoints.MapControllers();
-        //});
 
         app.MapControllers();
 
