@@ -9,15 +9,15 @@ namespace metrics
 {
     // collects metrics that show on the page of quotas for Compute
     public class MeterHelper<T> : Meter where T : struct 
-
     {
-
-
         private readonly ILogger _logger;
         private AzureContext _context;
         private LinkedList<ObservableGauge<T>> gauges = new LinkedList<ObservableGauge<T>>();
         private Func<SubscriptionResource, AzureLocation, IQuota<T>> _quotaGenerator;
         private string _name;
+
+        private List<QuotaMeasurement<T>> quotaMeasurements;
+
         public MeterHelper( ILogger logger, 
                             string MeterName, 
                             string name,
@@ -39,8 +39,7 @@ namespace metrics
                                                       description: descriptionLimits));
         }
 
-        private IEnumerable<Measurement<T>> GetQuotas()
-        {
+        private IEnumerable<QuotaMeasurement<T>> GetMeasurements(){
             _logger.LogInformation("Starting to get " + _name + "-quotas");
             foreach (SubscriptionResource subscription in _context.Subscriptions)
             {
@@ -52,32 +51,22 @@ namespace metrics
                     {
                         if (!answer.IsZero)
                         {
-                            yield return new Measurement<T>(answer.Value, answer.Keys);
+                            yield return answer;
                         }
                     }
                 }
             }
             _logger.LogInformation("Completed getting " + _name + "-quotas");
         }
+
+        private IEnumerable<Measurement<T>> GetQuotas()
+        {
+            quotaMeasurements = GetMeasurements().ToList();
+            return quotaMeasurements.Select(answer=> new Measurement<T>(answer.Value, answer.Keys));
+        }
         private IEnumerable<Measurement<T>> GetQuotaLimits()
         {
-            _logger.LogInformation("Starting to get " + _name + "-limits");
-            foreach (SubscriptionResource subscription in _context.Subscriptions)
-            {
-                foreach (var location in _context.Locations)
-                {
-                    _logger.LogInformation("Fetching " + _name + "-limits for " + subscription.Id.SubscriptionId + " in " + location.ToString());
-                    var answers = _quotaGenerator(subscription, location).GetQuotas();
-                    foreach (var answer in answers)
-                    {
-                        if (!answer.IsZero)
-                        {
-                            yield return new Measurement<T>(answer.Limit, answer.Keys);
-                        }
-                    }
-                }
-            }
-            _logger.LogInformation("Completed getting " + _name + "-limits");
+            return quotaMeasurements.Select(answer => new Measurement<T>(answer.Limit, answer.Keys));
         }
     }
 }
