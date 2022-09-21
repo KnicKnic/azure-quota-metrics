@@ -5,20 +5,20 @@ using Azure.ResourceManager.Resources;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics.Metrics;
 
-namespace metrics
+namespace metrics.Meters
 {
     // collects metrics that show on the page of quotas for Compute
-    public class NetworkMeter : MeterHelper<long>
+    public class Network : Helper<long>
     {
         static public string MeterName = Constants.MeterBaseName + "NetworkPageMeter";
-        public NetworkMeter(ILogger logger, AzureContext context) :
+        public Network(ILogger logger, AzureContext context) :
              base(
              logger,
              MeterName,
              "network-page",
              "The usage of Network Accounts",
              "The limit of Network Accounts",
-             (SubscriptionResource subscription, AzureLocation location) => new NetworkQuota(subscription, location),
+             (subscription, location) => new metrics.Quotas.Network(subscription, location),
              context)
         {
         }

@@ -11,18 +11,18 @@ using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
 using Microsoft.Rest;
 using Azure.Identity;
 
-namespace metrics
+namespace metrics.Quotas
 {
     // collects metrics that show on the page of quotas for Compute
-    public class RoleAssigmentQuota : IQuota<long>
+    public class RoleAssigment : IQuota<long>
     {
         private SubscriptionResource _subscription;
-        public RoleAssigmentQuota(SubscriptionResource subscription)
+        public RoleAssigment(SubscriptionResource subscription)
         {
             _subscription = subscription;
         }
 
-        IEnumerable<KeyValuePair<string, object?>> Keys( SubscriptionResource subscriptionResource)
+        IEnumerable<KeyValuePair<string, object?>> Keys(SubscriptionResource subscriptionResource)
         {
             return new[] { new KeyValuePair<string, object?>("name", "RoleAssigments")
                 , new KeyValuePair<string, object?>("localized_name","Role Assigments")

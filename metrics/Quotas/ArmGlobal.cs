@@ -5,16 +5,16 @@ using Microsoft.Rest.Azure.OData;
 using Microsoft.Rest.Azure;
 using System.Threading;
 
-namespace metrics
+namespace metrics.Quotas
 {
     // https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits
-    public class ArmGlobalQuota : IQuota<long>
+    public class ArmGlobal : IQuota<long>
     {
 
         private SubscriptionResource _subscription;
         private AzureLocation _location;
         private Tuple<string, int>[] _limits;
-        public ArmGlobalQuota(SubscriptionResource subscription, AzureLocation location, Tuple<string, int>[] limits)
+        public ArmGlobal(SubscriptionResource subscription, AzureLocation location, Tuple<string, int>[] limits)
         {
             _subscription = subscription;
             _location = location;
@@ -33,7 +33,7 @@ namespace metrics
 
         public IEnumerable<QuotaMeasurement<long>> GetQuotas()
         {
-            foreach(var limit in _limits)
+            foreach (var limit in _limits)
             {
                 string resourceType = limit.Item1;
                 long limits = limit.Item2;

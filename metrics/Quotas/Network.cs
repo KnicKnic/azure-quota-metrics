@@ -6,14 +6,14 @@ using Azure.ResourceManager.Resources;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics.Metrics;
 
-namespace metrics
+namespace metrics.Quotas
 {
     // collects metrics that show on the page of quotas for Compute
-    public class NetworkQuota : IQuota<long>
+    public class Network : IQuota<long>
     {
         private SubscriptionResource _subscription;
         private AzureLocation _location;
-        public NetworkQuota(SubscriptionResource subscription, AzureLocation location)
+        public Network(SubscriptionResource subscription, AzureLocation location)
         {
             _subscription = subscription;
             _location = location;

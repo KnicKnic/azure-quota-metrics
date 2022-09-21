@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using System.Diagnostics.Metrics;
 
 
-namespace metrics
+namespace metrics.Quotas
 {
     public interface IQuota<T> where T : struct
     {

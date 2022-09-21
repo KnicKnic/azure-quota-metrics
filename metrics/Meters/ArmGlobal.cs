@@ -6,19 +6,19 @@ using Microsoft.Extensions.Logging;
 using System.Diagnostics.Metrics;
 
 
-namespace metrics
+namespace metrics.Meters
 {
-    public class ArmGlobalMeter : MeterHelper<long>
+    public class ArmGlobal : Helper<long>
     {
         static public string MeterName = Constants.MeterBaseName + "ArmMeter";
-        public ArmGlobalMeter(ILogger logger, AzureContext globalContext, Tuple<string, int>[] armLimits) :
+        public ArmGlobal(ILogger logger, AzureContext globalContext, Tuple<string, int>[] armLimits) :
              base(
              logger,
              MeterName,
              "arm-page",
              "The usage of arm objects",
              "The limit of arm objects",
-             (SubscriptionResource subscription, AzureLocation location) => new ArmGlobalQuota(subscription, location, armLimits),
+             (subscription, location) => new metrics.Quotas.ArmGlobal(subscription, location, armLimits),
              globalContext,
              true)
         {

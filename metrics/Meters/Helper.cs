@@ -2,13 +2,14 @@
 using Azure.ResourceManager.Compute;
 using Azure.ResourceManager.Compute.Models;
 using Azure.ResourceManager.Resources;
+using metrics.Quotas;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics.Metrics;
 
-namespace metrics
+namespace metrics.Meters
 {
     // collects metrics that show on the page of quotas for Compute
-    public class MeterHelper<T> : Meter where T : struct 
+    public class Helper<T> : Meter where T : struct
     {
         private readonly ILogger _logger;
         private AzureContext _context;
@@ -19,7 +20,7 @@ namespace metrics
 
         private List<QuotaMeasurement<T>> quotaMeasurements = new List<QuotaMeasurement<T>>();
 
-        public MeterHelper(ILogger logger,
+        public Helper(ILogger logger,
                             string MeterName,
                             string name,
                             string descriptionValues,
@@ -34,15 +35,16 @@ namespace metrics
             _name = name;
             this.returnEmptyValues = returnEmptyValues;
             _quotaGenerator = quotaGenerator;
-            gauges.Append(CreateObservableGauge<T>(   name: name + "-quotas",
+            gauges.Append(CreateObservableGauge(name: name + "-quotas",
                                                       observeValues: GetQuotas,
                                                       description: descriptionValues));
-            gauges.Append(CreateObservableGauge<T>(   name: name + "-limits",
+            gauges.Append(CreateObservableGauge(name: name + "-limits",
                                                       observeValues: GetQuotaLimits,
                                                       description: descriptionLimits));
         }
 
-        private IEnumerable<QuotaMeasurement<T>> GetMeasurements(){
+        private IEnumerable<QuotaMeasurement<T>> GetMeasurements()
+        {
             _logger.LogInformation("Starting to get " + _name + "-quotas");
             foreach (SubscriptionResource subscription in _context.Subscriptions)
             {
@@ -65,7 +67,7 @@ namespace metrics
         private IEnumerable<Measurement<T>> GetQuotas()
         {
             quotaMeasurements = GetMeasurements().ToList();
-            return quotaMeasurements.Select(answer=> new Measurement<T>(answer.Value, answer.Keys));
+            return quotaMeasurements.Select(answer => new Measurement<T>(answer.Value, answer.Keys));
         }
         private IEnumerable<Measurement<T>> GetQuotaLimits()
         {

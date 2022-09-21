@@ -1,24 +1,25 @@
 ﻿using Azure.Core;
-using Azure.ResourceManager.Compute;
-using Azure.ResourceManager.Compute.Models;
+using Azure.ResourceManager.Storage;
+using Azure.ResourceManager.Storage.Models;
 using Azure.ResourceManager.Resources;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics.Metrics;
+using Azure.ResourceManager.Network.Models;
 
-
-namespace metrics
+namespace metrics.Quotas
 {
-    public class ComputeQuota: IQuota<long>
+    // collects metrics that show on the page of quotas for Compute
+    public class Storage : IQuota<int>
     {
         private SubscriptionResource _subscription;
         private AzureLocation _location;
-        public ComputeQuota(SubscriptionResource subscription, AzureLocation location)
+        public Storage(SubscriptionResource subscription, AzureLocation location)
         {
             _subscription = subscription;
             _location = location;
         }
 
-        private IEnumerable<KeyValuePair<string, object?>> Keys(ComputeUsage resource, SubscriptionResource subscriptionResource)
+        IEnumerable<KeyValuePair<string, object?>> Keys(StorageUsage resource, SubscriptionResource subscriptionResource)
         {
             return new[] { new KeyValuePair<string, object?>("name", resource.Name.Value)
                 , new KeyValuePair<string, object?>("localized_name", resource.Name.LocalizedValue)
@@ -27,11 +28,10 @@ namespace metrics
                 , new KeyValuePair<string, object?>("subscription", subscriptionResource.Id.SubscriptionId)
                 };
         }
-
-        public IEnumerable<QuotaMeasurement<long>> GetQuotas()
+        public IEnumerable<QuotaMeasurement<int>> GetQuotas()
         {
-            return _subscription.GetUsages(_location).Select(
-                item => new QuotaMeasurement<long>(item.CurrentValue, item.Limit, Keys(item, _subscription).ToArray())
+            return _subscription.GetUsagesByLocation(_location).Select(
+                item => new QuotaMeasurement<int>(item.CurrentValue ?? 0, item.Limit ?? 0, Keys(item, _subscription).ToArray())
                 );
         }
     }

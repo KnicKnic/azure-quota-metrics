@@ -24,7 +24,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using Microsoft.Rest;
-
+using metrics.Meters;
 
 public class Program
 {
@@ -99,17 +99,17 @@ public class Program
 
 
         //builder.Services.AddSingleton(ComputePageMeter)
-        var ilogger = new SerilogLoggerFactory(log).CreateLogger<ComputeMeter>();
+        var ilogger = new SerilogLoggerFactory(log).CreateLogger<Compute>();
         var azureContext = new AzureContext(subscriptions, location);
         var globalAzureContext = new AzureContext(subscriptions, location.Take(1).ToArray()); // only want one location as we won't use it
 
         builder.Services.AddSingleton(azureContext);
 
-        using var computePageMeter = new ComputeMeter(new SerilogLoggerFactory(log).CreateLogger<ComputeMeter>(), azureContext);
+        using var computePageMeter = new Compute(new SerilogLoggerFactory(log).CreateLogger<Compute>(), azureContext);
         using var storagePageMeter = new StorageMeter(new SerilogLoggerFactory(log).CreateLogger<StorageMeter>(), azureContext);
-        using var networkPageMeter = new NetworkMeter(new SerilogLoggerFactory(log).CreateLogger<NetworkMeter>(), azureContext);
-        using var armPageMeter = new ArmGlobalMeter(new SerilogLoggerFactory(log).CreateLogger<ArmGlobalMeter>(), globalAzureContext, armLimitsParsed);
-        using var roleAssigmentPageMeter = new RoleAssigmentMeter(new SerilogLoggerFactory(log).CreateLogger<RoleAssigmentMeter>(), globalAzureContext);
+        using var networkPageMeter = new Network(new SerilogLoggerFactory(log).CreateLogger<Network>(), azureContext);
+        using var armPageMeter = new ArmGlobal(new SerilogLoggerFactory(log).CreateLogger<ArmGlobal>(), globalAzureContext, armLimitsParsed);
+        using var roleAssigmentPageMeter = new RoleAssigment(new SerilogLoggerFactory(log).CreateLogger<RoleAssigment>(), globalAzureContext);
 
         using MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
                 .AddMeter(computePageMeter.Name)
