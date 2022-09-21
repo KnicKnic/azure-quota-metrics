@@ -1,4 +1,4 @@
-﻿namespace metrics
+﻿namespace metrics.Quotas
 {
     public struct QuotaMeasurement<T> where T : struct
     {
@@ -17,7 +17,7 @@
             get
             {
                 T newValue = default;
-                return ValueType.Equals(Value, newValue);
+                return Equals(Value, newValue);
             }
         }
     }
