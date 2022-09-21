@@ -15,21 +15,24 @@ namespace metrics
         private LinkedList<ObservableGauge<T>> gauges = new LinkedList<ObservableGauge<T>>();
         private Func<SubscriptionResource, AzureLocation, IQuota<T>> _quotaGenerator;
         private string _name;
+        private bool returnEmptyValues;
 
         private List<QuotaMeasurement<T>> quotaMeasurements = new List<QuotaMeasurement<T>>();
 
-        public MeterHelper( ILogger logger, 
-                            string MeterName, 
+        public MeterHelper(ILogger logger,
+                            string MeterName,
                             string name,
-                            string descriptionValues, 
-                            string descriptionLimits, 
-                            Func<SubscriptionResource, AzureLocation, IQuota<T>> quotaGenerator, 
-                            AzureContext context )
+                            string descriptionValues,
+                            string descriptionLimits,
+                            Func<SubscriptionResource, AzureLocation, IQuota<T>> quotaGenerator,
+                            AzureContext context,
+                            bool returnEmptyValues = false)
             : base(MeterName)
         {
             _logger = logger;
             _context = context;
             _name = name;
+            this.returnEmptyValues = returnEmptyValues;
             _quotaGenerator = quotaGenerator;
             gauges.Append(CreateObservableGauge<T>(   name: name + "-quotas",
                                                       observeValues: GetQuotas,
@@ -49,7 +52,7 @@ namespace metrics
                     var answers = _quotaGenerator(subscription, location).GetQuotas();
                     foreach (var answer in answers)
                     {
-                        if (!answer.IsZero)
+                        if (returnEmptyValues || !answer.IsZero)
                         {
                             yield return answer;
                         }

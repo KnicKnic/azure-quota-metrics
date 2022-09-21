@@ -19,7 +19,8 @@ namespace metrics
              "The usage of Role Assignments",
              "The limit of Role Assignments",
              (SubscriptionResource subscription, AzureLocation location) => new RoleAssigmentQuota(subscription),
-             globalContext) // only want one location as we generate this data globally
+             globalContext, // only want one location as we generate this data globally
+             true ) 
         {
         }
     }

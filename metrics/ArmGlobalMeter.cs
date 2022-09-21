@@ -19,7 +19,8 @@ namespace metrics
              "The usage of arm objects",
              "The limit of arm objects",
              (SubscriptionResource subscription, AzureLocation location) => new ArmGlobalQuota(subscription, location, armLimits),
-             globalContext)
+             globalContext,
+             true)
         {
         }
     }
