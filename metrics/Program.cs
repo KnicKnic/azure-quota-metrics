@@ -64,13 +64,16 @@ public class Program
         var subscriptions = this.Subscription.Select(subscription => client.GetSubscriptionResource(new Azure.Core.ResourceIdentifier("/subscriptions/" + subscription))).ToArray();
 
         var location = this.Location.Select(l => new Azure.Core.AzureLocation(l.Trim())).ToArray();
-        foreach (var loc in location)
-        {
-            if ((loc.DisplayName ?? "") == "")
-            {
-                throw new Exception("string is empty");
-            }
-        }
+
+        // should we validate the locations?
+        //// this doesn't work for non public azure regions
+        //foreach (var loc in location)
+        //{
+        //    if ((loc.DisplayName ?? "") == "")
+        //    {
+        //        throw new Exception("string is empty");
+        //    }
+        //}
 
 
         var loggerFactory = new LoggerConfiguration().WriteTo.Console();
