@@ -34,9 +34,5 @@ namespace metrics
                 item => new QuotaMeasurement<long>(item.CurrentValue, item.Limit, Keys(item, _subscription).ToArray())
                 );
         }
-        public static IQuota<long> GetQuotasGenerator(SubscriptionResource subscription, AzureLocation location)
-        {
-            return new ComputeQuota(subscription, location);
-        }
     }
 }

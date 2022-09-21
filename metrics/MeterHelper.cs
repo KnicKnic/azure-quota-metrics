@@ -16,7 +16,7 @@ namespace metrics
         private Func<SubscriptionResource, AzureLocation, IQuota<T>> _quotaGenerator;
         private string _name;
 
-        private List<QuotaMeasurement<T>> quotaMeasurements;
+        private List<QuotaMeasurement<T>> quotaMeasurements = new List<QuotaMeasurement<T>>();
 
         public MeterHelper( ILogger logger, 
                             string MeterName, 

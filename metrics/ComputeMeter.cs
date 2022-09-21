@@ -10,7 +10,7 @@ namespace metrics
 {
     public class ComputeMeter: MeterHelper<long>
     {
-       static public string MeterName = "github.com/KnicKnic/azure-metrics/ComputerPageMeter";
+       static public string MeterName = Constants.MeterBaseName + "ComputerPageMeter";
        public ComputeMeter(ILogger logger, AzureContext context) :
             base(
             logger,

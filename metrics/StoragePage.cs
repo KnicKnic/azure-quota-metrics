@@ -10,7 +10,7 @@ namespace metrics
     // collects metrics that show on the page of quotas for Compute
     public class StorageMeter : MeterHelper<int>
     {
-        static public string MeterName = "github.com/KnicKnic/azure-metrics/StoragePageMeter";
+        static public string MeterName = Constants.MeterBaseName + "StoragePageMeter";
         public StorageMeter(ILogger logger, AzureContext context) :
              base(
              logger,

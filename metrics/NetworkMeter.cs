@@ -10,14 +10,14 @@ namespace metrics
     // collects metrics that show on the page of quotas for Compute
     public class NetworkMeter : MeterHelper<long>
     {
-        static public string MeterName = "github.com/KnicKnic/azure-metrics/NetworkPageMeter";
+        static public string MeterName = Constants.MeterBaseName + "NetworkPageMeter";
         public NetworkMeter(ILogger logger, AzureContext context) :
              base(
              logger,
              MeterName,
              "network-page",
-             "The usage of accounts",
-             "The limit of accounts",
+             "The usage of Network Accounts",
+             "The limit of Network Accounts",
              (SubscriptionResource subscription, AzureLocation location) => new NetworkQuota(subscription, location),
              context)
         {
