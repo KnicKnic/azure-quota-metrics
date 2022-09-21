@@ -4,7 +4,6 @@ using Azure.ResourceManager.Storage.Models;
 using Azure.ResourceManager.Resources;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics.Metrics;
-using metrics;
 
 namespace metrics.Meters
 {

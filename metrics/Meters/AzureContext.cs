@@ -6,18 +6,18 @@ using Azure.ResourceManager.Resources;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics.Metrics;
 
-namespace metrics
+namespace metrics.Meters
 {
     public class AzureContext
-    {        
-        public SubscriptionResource[] Subscriptions{ get ; private set; }
+    {
+        public SubscriptionResource[] Subscriptions { get; private set; }
 
         public AzureLocation[] Locations { get; private set; }
 
         public AzureContext(SubscriptionResource[] subscriptions, AzureLocation[] locations)
         {
-            this.Subscriptions = subscriptions;
-            this.Locations = locations;
+            Subscriptions = subscriptions;
+            Locations = locations;
         }
     }
 }
