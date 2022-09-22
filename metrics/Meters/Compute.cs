@@ -16,8 +16,8 @@ namespace metrics.Meters
              logger,
              MeterName,
              "compute-page",
-             "The usage of cores",
-             "The limit of cores",
+             "Amount of cpu used, similar to quota page in Azure portal",
+             "Limits for CPU used, similar to quota page in Azure portal",
              (subscription, location) => new metrics.Quotas.Compute(subscription, location),
              context)
         {

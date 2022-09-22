@@ -16,8 +16,8 @@ namespace metrics.Meters
              logger,
              MeterName,
              "storage-page",
-             "The usage of accounts",
-             "The limit of accounts",
+             "Amount of storage used, similar to quota page in Azure portal",
+             "Limits for storage used, similar to quota page in Azure portal",
              (subscription, location) => new metrics.Quotas.Storage(subscription, location),
              context)
         {

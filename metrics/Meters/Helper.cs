@@ -4,6 +4,7 @@ using Azure.ResourceManager.Compute.Models;
 using Azure.ResourceManager.Resources;
 using metrics.Quotas;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
 
 namespace metrics.Meters
@@ -66,7 +67,17 @@ namespace metrics.Meters
 
         private IEnumerable<Measurement<T>> GetQuotas()
         {
-            quotaMeasurements = GetMeasurements().ToList();
+            try
+            {
+                quotaMeasurements = GetMeasurements().ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to get {_name}-quotas");
+                Console.WriteLine(ex);
+                Thread.Sleep(10); // ensure flush console
+                System.Environment.Exit(1);
+            }
             return quotaMeasurements.Select(answer => new Measurement<T>(answer.Value, answer.Keys));
         }
         private IEnumerable<Measurement<T>> GetQuotaLimits()

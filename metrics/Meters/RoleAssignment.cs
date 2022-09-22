@@ -16,8 +16,8 @@ namespace metrics.Meters
              logger,
              MeterName,
              "role-assignment-page",
-             "The usage of Role Assignments",
-             "The limit of Role Assignments",
+             "Amount of Role Assignments used, similar to Role Assignments page in Azure porta",
+             "Limit of Role Assignments used, similar to Role Assignments page in Azure porta",
              (subscription, location) => new metrics.Quotas.RoleAssigment(subscription),
              globalContext, // only want one location as we generate this data globally
              true)

@@ -16,8 +16,8 @@ namespace metrics.Meters
              logger,
              MeterName,
              "network-page",
-             "The usage of Network Accounts",
-             "The limit of Network Accounts",
+             "Amount of network used, similar to quota page in Azure portal",
+             "Limit of network used, similar to quota page in Azure portal",
              (subscription, location) => new metrics.Quotas.Network(subscription, location),
              context)
         {

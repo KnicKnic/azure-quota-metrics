@@ -29,16 +29,15 @@ using metrics.Meters;
 public class Program
 {
     [Option]
-    public string[] Name { get; set; } = { "localhost", "127.0.0.1" };
-    [Option]
-    public string Port { get; set; } = "9184";
-
-    [Option]
     public string[] Subscription { get; set; } = { "7c5b2a0d-bcc2-41f7-bcea-c381f49e6d1f" };
 
     [Option]
     public string[] Location { get; set; } = { "EastUS" };
 
+    // use to use node label's 
+    // topology.kubernetes.io/region: westus2
+    [Option(ShortName = "e")]
+    public string? LocationViaEnvironment { get; set; }
     // should be in form of
     // Microsoft.Network/trafficManagerProfiles=200
     [Option]
@@ -60,6 +59,12 @@ public class Program
 
         var credential = new DefaultAzureCredential();
         ArmClient client = new ArmClient(credential);
+
+        // override location if we get it via environment variable
+        if (LocationViaEnvironment != null)
+        {
+            Location = new string[] { Environment.GetEnvironmentVariable(LocationViaEnvironment) };
+        }
 
         var subscriptions = this.Subscription.Select(subscription => client.GetSubscriptionResource(new Azure.Core.ResourceIdentifier("/subscriptions/" + subscription))).ToArray();
 

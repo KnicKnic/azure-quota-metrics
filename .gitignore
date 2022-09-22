@@ -364,3 +364,5 @@ FodyWeavers.xsd
 
 secrets/**
 launchSettings.json
+build/**
+metrics.txt

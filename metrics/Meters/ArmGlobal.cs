@@ -16,8 +16,8 @@ namespace metrics.Meters
              logger,
              MeterName,
              "arm-page",
-             "The usage of arm objects",
-             "The limit of arm objects",
+             "Amount of arm objects of a type, see command line options for controlling what objects are queried",
+             "Limits of arm objects of a type, see command line options for controlling what objects are queried",
              (subscription, location) => new metrics.Quotas.ArmGlobal(subscription, location, armLimits),
              globalContext,
              true)

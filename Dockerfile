@@ -35,4 +35,4 @@ COPY --from=build /build .
 
 ENTRYPOINT ["dotnet", "/app/metrics.dll"]
 
-EXPOSE 9184
+EXPOSE 8080
