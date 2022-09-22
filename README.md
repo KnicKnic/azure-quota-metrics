@@ -58,7 +58,6 @@ see `metrics/appsettings.json` contains application port (8080)
 The goal is to create X_quota and X_limit such that you can set alerts for X_quota / X_limit >=.8 to know when you are running low on capacity
 
 Below is a list of sample metrics
-| |
 name | description
 :----- | ----: 
 compute_page_quotas  | Amount of cpu used, similar to quota page in Azure portal
