@@ -1,7 +1,7 @@
 [![Docker Image Version (latest by date)](https://img.shields.io/docker/v/knicknic/azure-metrics?label=Container%20image:%20knicknic/azure-metrics)](https://hub.docker.com/r/knicknic/azure-metrics)
 
 # Goal
-Create easy to use collectors, alerts, and dashboards for Azure Quota metrics.
+Create easy to use collectors(prometheus / opentelemetry), alerts, and dashboards for Azure Quota metrics.
 
 To help ensure that you are staying within appropriate quotas or limits for your azure resources.
 
@@ -22,7 +22,7 @@ To help ensure that you are staying within appropriate quotas or limits for your
  - [ ] add more items
 
 ## Configuration
-How to configure this asp.net app
+How to configure this docker container / asp.net app
 ### Command line
 ```bash
 # dotnet .\bin\Debug\net6.0\metrics.dll -?
