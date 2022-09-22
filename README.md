@@ -155,9 +155,9 @@ Here is a sample prometheus alert manager alert file
 [alerts/alerts.yaml](alerts/alerts.yaml)
 
 ## Kubernetes Installation
-You have to figure out how to Authenticate to Azure, you can use something like [https://github.com/Azure/aad-pod-identity](https://github.com/Azure/aad-pod-identity) or you can use client secrets (see comments in deployment.yaml).
+You have to figure out how to Authenticate to Azure, you can use something like [https://github.com/Azure/aad-pod-identity](https://github.com/Azure/aad-pod-identity) or you can use client secrets (see comments in [deployment.yaml](install/kubernetes/deployment.yaml)).
 
-Also update deployment.yaml to not point to westus if you wish to target a different region for your stats
+Also update [deployment.yaml](install/kubernetes/deployment.yaml) to not point to westus if you wish to target a different region for your stats
 
 ``` bash
 kubectl apply -f install/kubernetes/service.yaml
