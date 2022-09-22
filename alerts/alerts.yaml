@@ -1,0 +1,43 @@
+groups:
+- name: Quota alerts
+  rules:
+  - alert: Compute Quota alert
+    expr: (compute_page_quotas / compute_page_limits) >= .8
+    for: 3m
+    labels:
+      severity: warning
+    annotations:
+      title: Compute Quota alert for {{ $labels.name }} in region {{ $labels.location }}
+      description: {{ $labels.localized_name }} in subscription {{ $labels.subscription }} in region {{ $labels.location }} is close to resource exhaustion.
+  - alert: Storage Quota alert
+    expr: (storage_page_quotas / storage_page_limits) >= .8
+    for: 3m
+    labels:
+      severity: warning
+    annotations:
+      title: Storage Quota alert for {{ $labels.name }} in region {{ $labels.location }}
+      description: {{ $labels.localized_name }} in subscription {{ $labels.subscription }} in region {{ $labels.location }} is close to resource exhaustion.
+  - alert: Network Quota alert
+    expr: (network_page_quotas / (network_page_limits > 5 )) >= .8
+    for: 3m
+    labels:
+      severity: warning
+    annotations:
+      title: Network Quota alert for {{ $labels.name }} in region {{ $labels.location }}
+      description: {{ $labels.localized_name }} in subscription {{ $labels.subscription }} in region {{ $labels.location }} is close to resource exhaustion.
+  - alert: Arm Quota alert
+    expr: (arm_page_quotas / arm_page_limits) >= .8
+    for: 3m
+    labels:
+      severity: warning
+    annotations:
+      title: Arm Quota alert for {{ $labels.name }} in region {{ $labels.location }}
+      description: {{ $labels.localized_name }} in subscription {{ $labels.subscription }} in region {{ $labels.location }} is close to resource exhaustion.
+  - alert: Role Assignment Quota alert
+    expr: (role_assignment_page_quotas / role_assignment_page_limits) >= .8
+    for: 3m
+    labels:
+      severity: warning
+    annotations:
+      title: Role Assignment Quota alert for {{ $labels.name }} in region {{ $labels.location }}
+      description: {{ $labels.localized_name }} in subscription {{ $labels.subscription }} in region {{ $labels.location }} is close to resource exhaustion.
