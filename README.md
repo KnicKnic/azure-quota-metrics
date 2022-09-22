@@ -1,3 +1,5 @@
+[![Docker Image Version (latest by date)](https://img.shields.io/docker/v/knicknic/azure-metrics?label=Container%20image:%20knicknic/azure-metrics)](https://hub.docker.com/r/knicknic/azure-metrics)
+
 # Goal
 Create easy to use collectors, alerts, and dashboards for Azure metrics.
 
@@ -9,7 +11,7 @@ To help ensure that you are staying within appropriate quotas or limits for your
  - [x] create source code to get role assignment metrics
  - [x] create docker file
  - [x] auto detection of current location
- - [] create online repository location for docker file
+ - [x] create online repository location for docker file
  - [] create grafana chart
  - [] create alert manager alerts
  - [] Create helm chart / k8s install directions to ease installation
@@ -142,7 +144,8 @@ role_assignment_page_quotas{localized_name="Role Assigments",location="global",n
 # TYPE role_assignment_page_limits gauge
 role_assignment_page_limits{localized_name="Role Assigments",location="global",name="RoleAssigments",subscription="abcdef01-0123-0123-0123-0123456789ab",unit="count"} 4000 1663802604440
 ```
-
+## Build
+docker build . -t knicknic/azure-metrics && docker push knicknic/azure-metrics
 
 ## Potentially useful sites?
 https://github.com/AppMetrics/HealthAzure
