@@ -9,7 +9,7 @@ RUN set -x && dotnet build metrics.sln -c "Release" -o "/build"
 
 
 # Copy the published application
-FROM mcr.microsoft.com/dotnet/aspnet:6.0.8-cbl-mariner2.0-amd64@sha256:0144a026361143348421f4fea488146d53d8f397550a1bff26e71d6f62b1959c AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:6.0.9-cbl-mariner2.0-amd64@sha256:3f7009d557beb5c42ae18ac485ff390fd3e47266cb30f4d8cf229b7e9f2f9a83 AS runtime
 
 # docs suggest prefer updates over reproducibility in builds
 # https://eng.ms/docs/more/containers-secure-supply-chain/updating
