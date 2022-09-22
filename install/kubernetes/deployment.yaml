@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azure-metrics
+  namespace: geneva
+spec:
+  selector:
+    matchLabels:
+      knicknic.github.io/name: azure-metrics
+  template:
+    metadata:
+      labels:
+        knicknic.github.io/name: azure-metrics
+    spec:
+      containers:
+      - name: metrics
+        # # Uncomment out below to specify client secret
+        # env:
+        # - name: AZURE_TENANT_ID
+        #   value: <USER SPECIFIED AZURE_TENANT_ID **UPDATE VALUE**>
+        # - name: AZURE_CLIENT_ID
+        #   value: <USER SPECIFIED AZURE_CLIENT_ID **UPDATE VALUE**>
+        # - name: AZURE_CLIENT_SECRET
+        #   value: <USER SPECIFIED AZURE_CLIENT_SECRET **UPDATE VALUE**>
+        image: knicknic/azure-metrics
+        imagePullPolicy: Always
+        args:
+        - "-l"
+        - "westus" # update this to the region you wish to get stats on
+        # - "-l"        # you can specify the locations more than once to
+        # - "eastus"    # use multiple regions
+        securityContext:
+          privileged: false        
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30

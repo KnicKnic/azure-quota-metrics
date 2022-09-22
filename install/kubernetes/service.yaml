@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-metrics
+spec:
+  selector:
+    knicknic.github.io/name: azure-metrics
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

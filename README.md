@@ -10,15 +10,16 @@ To help ensure that you are staying within appropriate quotas or limits for your
  - [x] Create Source code to get traffic manager metrics
  - [x] create source code to get role assignment metrics
  - [x] create docker file
- - [x] auto detection of current location
+ - [ ] auto detection of current location
  - [x] create online repository location for docker file
  - [x] create grafana chart
  - [x] create alert manager alerts
- - [] Create helm chart / k8s install directions to ease installation
- - [] add images for windows & arm64
- - [] add dependabot
- - [] add release / publishing scripts
- - [] add more items
+ - [x] explain how to install in prometheus
+ - [x] Create helm chart / k8s install directions to ease installation
+ - [ ] add images for windows & arm64
+ - [ ] add dependabot
+ - [ ] add release / publishing scripts
+ - [ ] add more items
 
 ## Configuration
 How to configure this asp.net app
@@ -32,7 +33,6 @@ Options:
                                                             Default value is: 7c5b2a0d-bcc2-41f7-bcea-c381f49e6d1f.
   -l|--location <LOCATION>                                  Location
                                                             Default value is: EastUS.
-  -e|--location-via-environment <LOCATION_VIA_ENVIRONMENT>  LocationViaEnvironment
   -a|--arm-limit <ARM_LIMIT>                                ArmLimit
                                                             Default value is: Microsoft.Network/trafficManagerProfiles=200.
   -?|-h|--help                                              Show help information.
@@ -43,7 +43,7 @@ You can specify the above values more than once on the command line to add multi
 https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-6.0#environment-variables-set-in-generated-launchsettingsjson
 
 You can configure client auth if not using AAD Pod identity.
-| |
+
 Environment Variable Name | value
 :----- | ----: 
 AZURE_TENANT_ID  | tenantId 
@@ -153,6 +153,30 @@ Here is a simple exported Dashboard from grafana
 ## Alerts
 Here is a sample prometheus alert manager alert file
 [alerts/alerts.yaml](alerts/alerts.yaml)
+
+## Kubernetes Installation
+You have to figure out how to Authenticate to Azure, you can use something like [https://github.com/Azure/aad-pod-identity](https://github.com/Azure/aad-pod-identity) or you can use client secrets (see comments in deployment.yaml).
+
+Also update deployment.yaml to not point to westus if you wish to target a different region for your stats
+
+``` bash
+kubectl apply -f install/kubernetes/service.yaml
+kubectl apply -f install/kubernetes/deployment.yaml
+```
+
+## Prometheus Scrape Config
+Ensure that you have updated your prometheus config to contain something like this
+
+``` yaml
+scrape_configs:
+- job_name: 'azure-metrics'
+  scrape_interval: 60s
+  scrape_timeout: 60s
+  scheme: http
+  metrics_path: '/metrics'
+  static_configs:
+  - targets: ['azure-metrics.default.svc.cluster.local:8080']
+```
 
 ## Build
 docker build . -t knicknic/azure-metrics && docker push knicknic/azure-metrics
