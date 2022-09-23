@@ -55,8 +55,9 @@ AZURE_CLIENT_SECRET  | secret
 see `metrics/appsettings.json` contains application port (8080)
 
 ## Example metrics
-**Note by default metrics with a 0 reading are filtered out**
 The goal is to create X_quota and X_limit such that you can set alerts for X_quota / X_limit >=.8 to know when you are running low on capacity
+
+**Note by default metrics with a 0 reading are filtered out**
 
 Below is a list of sample metrics
 name | description
