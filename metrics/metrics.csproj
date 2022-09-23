@@ -11,7 +11,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Azure.Identity" Version="1.6.0" />
     <PackageReference Include="Azure.ResourceManager.Compute" Version="1.0.0" />
-    <PackageReference Include="Azure.ResourceManager.Network" Version="1.0.0" />
+    <PackageReference Include="Azure.ResourceManager.Network" Version="1.0.1" />
     <PackageReference Include="Azure.ResourceManager.Reservations" Version="1.0.0" />
     <PackageReference Include="Azure.ResourceManager.Storage" Version="1.0.0-beta.11" />
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="4.0.1" />
