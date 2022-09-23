@@ -1,5 +1,5 @@
 # Start from the sdk image
-FROM mcr.microsoft.com/dotnet/sdk:6.0.400-cbl-mariner2.0@sha256:b537aba85bb5f051c736bf4fe05840e6e125ea7b3e346754c289d9addff80dbc AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0.401-cbl-mariner2.0@sha256:d77f43f6584085f89c8d964e8818369af4d14f6ab440b05c31e5117191f29f1d AS build
 ARG workingDir="/app"
 
 WORKDIR "$workingDir"
