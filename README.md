@@ -158,7 +158,8 @@ Here is a sample prometheus alert manager alert file
 ## Kubernetes Installation
 You have to figure out how to Authenticate to Azure, you can use something like [https://github.com/Azure/aad-pod-identity](https://github.com/Azure/aad-pod-identity) or you can use client secrets (see comments in [deployment.yaml](install/kubernetes/deployment.yaml)).
 
-Also update [deployment.yaml](install/kubernetes/deployment.yaml) to not point to westus if you wish to target a different region for your stats
+Ensure to  update [deployment.yaml](install/kubernetes/deployment.yaml) to point to region (not just westus) if you wish to target a different region for your stats
+& update it for your subscription id.
 
 ``` bash
 kubectl apply -f install/kubernetes/service.yaml
