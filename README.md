@@ -181,9 +181,10 @@ scrape_configs:
 docker build . -t knicknic/azure-metrics && docker push knicknic/azure-metrics
 
 ## Potentially useful sites?
-https://github.com/AppMetrics/HealthAzure
-https://github.com/webdevops/azure-resourcemanager-exporter
-https://github.com/project-sunbird/prometheus-azure-blob-exporter
-https://github.com/FXinnovation/azure-resources-exporter
-https://github.com/sylr/prometheus-azure-exporter
-https://docs.datadoghq.com/integrations/azure/?tab=azurecliv20
+* https://learn.microsoft.com/en-us/rest/api/reserved-vm-instances/quotaapi?branch=capacity
+* https://github.com/AppMetrics/HealthAzure
+* https://github.com/webdevops/azure-resourcemanager-exporter
+* https://github.com/project-sunbird/prometheus-azure-blob-exporter
+* https://github.com/FXinnovation/azure-resources-exporter
+* https://github.com/sylr/prometheus-azure-exporter
+* https://docs.datadoghq.com/integrations/azure/?tab=azurecliv20
