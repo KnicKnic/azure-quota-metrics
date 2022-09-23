@@ -16,6 +16,7 @@ To help ensure that you are staying within appropriate quotas or limits for your
  - [x] create alert manager alerts
  - [x] explain how to install in prometheus
  - [x] Create helm chart / k8s install directions to ease installation
+ - [x] Figure out minimal permissions needed
  - [ ] add images for windows & arm64
  - [ ] add dependabot
  - [ ] add release / publishing scripts
