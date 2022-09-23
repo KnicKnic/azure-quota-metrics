@@ -25,6 +25,8 @@ spec:
         image: knicknic/azure-metrics
         imagePullPolicy: Always
         args:
+        - "-s"
+        - "abcdef01-0123-0123-0123-0123456789ab"
         - "-l"
         - "westus" # update this to the region you wish to get stats on
         # - "-l"        # you can specify the locations more than once to
