@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: azure-metrics
+  name: azure-quota-metrics
 spec:
   selector:
-    knicknic.github.io/name: azure-metrics
+    knicknic.github.io/name: azure-quota-metrics
   ports:
     - protocol: TCP
       port: 8080

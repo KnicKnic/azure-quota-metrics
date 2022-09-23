@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: azure-metrics
+  name: azure-quota-metrics
   namespace: geneva
 spec:
   selector:
     matchLabels:
-      knicknic.github.io/name: azure-metrics
+      knicknic.github.io/name: azure-quota-metrics
   template:
     metadata:
       labels:
-        knicknic.github.io/name: azure-metrics
+        knicknic.github.io/name: azure-quota-metrics
     spec:
       containers:
       - name: metrics
@@ -22,15 +22,17 @@ spec:
         #   value: <USER SPECIFIED AZURE_CLIENT_ID **UPDATE VALUE**>
         # - name: AZURE_CLIENT_SECRET
         #   value: <USER SPECIFIED AZURE_CLIENT_SECRET **UPDATE VALUE**>
-        image: knicknic/azure-metrics
+        image: knicknic/azure-quota-metrics
         imagePullPolicy: Always
         args:
-        - "-s"
+        - "--subscription"
         - "abcdef01-0123-0123-0123-0123456789ab"
-        - "-l"
-        - "westus" # update this to the region you wish to get stats on
-        # - "-l"        # you can specify the locations more than once to
-        # - "eastus"    # use multiple regions
+        - "--location"
+        - "WestUS"
+        - "--location"
+        - "EastUS"
+        - "--arm-limit"
+        - "Microsoft.Network/trafficManagerProfiles=200"
         securityContext:
           privileged: false        
       dnsPolicy: ClusterFirst

@@ -8,18 +8,28 @@ COPY . $workingDir
 RUN set -x && dotnet build metrics.sln -c "Release" -o "/build"
 
 
+# Use the SDK image to create the nonroot user and group
+FROM mcr.microsoft.com/dotnet/aspnet:6.0.9-cbl-mariner2.0-amd64@sha256:3f7009d557beb5c42ae18ac485ff390fd3e47266cb30f4d8cf229b7e9f2f9a83 AS users
+RUN tdnf install shadow-utils -y && \
+  tdnf clean all
+
+RUN groupadd nonroot -g 1000 && useradd -r -M -s /sbin/nologin -g nonroot -c nonroot nonroot -u 1000
+
+FROM scratch AS nonroot
+COPY --from=users /etc/group /etc/group
+COPY --from=users /etc/passwd /etc/passwd
+
 # Copy the published application
 FROM mcr.microsoft.com/dotnet/aspnet:6.0.9-cbl-mariner2.0-amd64@sha256:3f7009d557beb5c42ae18ac485ff390fd3e47266cb30f4d8cf229b7e9f2f9a83 AS runtime
 
-# docs suggest prefer updates over reproducibility in builds
-# https://eng.ms/docs/more/containers-secure-supply-chain/updating
+COPY --from=nonroot / /
+
 # if someone doesnt clean first installs may fail, so for a clean for people incase they forgot
 RUN tdnf clean all && tdnf repolist --refresh && tdnf update -y && tdnf clean all
 
 # curl for testing, tar for support of kubectl
 RUN tdnf install curl tar -y && \
   tdnf clean all
-
 
 # region switch to using ubuntu
 
@@ -36,3 +46,4 @@ COPY --from=build /build .
 ENTRYPOINT ["dotnet", "/app/metrics.dll"]
 
 EXPOSE 8080
+USER nonroot

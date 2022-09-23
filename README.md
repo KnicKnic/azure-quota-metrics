@@ -1,4 +1,4 @@
-[![Docker Image Version (latest by date)](https://img.shields.io/docker/v/knicknic/azure-metrics?label=Container%20image:%20knicknic/azure-metrics)](https://hub.docker.com/r/knicknic/azure-metrics)
+[![Docker Image Version (latest by date)](https://img.shields.io/docker/v/knicknic/azure-quota-metrics?label=Container%20image:%20knicknic/azure-quota-metrics)](https://hub.docker.com/r/knicknic/azure-quota-metrics)
 
 # Goal
 Create easy to use collectors(prometheus / opentelemetry), alerts, and dashboards for Azure Quota metrics.
@@ -30,15 +30,17 @@ How to configure this docker container / asp.net app
 Usage: metrics [options]
 
 Options:
-  -s|--subscription <SUBSCRIPTION>                          Subscription
-                                                            Default value is: 7c5b2a0d-bcc2-41f7-bcea-c381f49e6d1f.
-  -l|--location <LOCATION>                                  Location
-                                                            Default value is: EastUS.
-  -a|--arm-limit <ARM_LIMIT>                                ArmLimit
-                                                            Default value is: Microsoft.Network/trafficManagerProfiles=200.
-  -?|-h|--help                                              Show help information.
+  -s|--subscription <SUBSCRIPTION>  Required. The Subscription id(s).
+                                    Ex: '--Subscription abcdef01-0123-0123-0123-0123456789ab'.
+                                    Can be specified more than once for multiple values
+  -l|--location <LOCATION>          Required. The region name(s).
+                                    Ex: '--Location EastUS'.
+                                    Can be specified more than once for multiple values
+  -a|--arm-limit <ARM_LIMIT>        Optional. Additional ARM type(s) to monitor <ArmType=LimitValue>.
+                                    Ex: '--ArmLimit Microsoft.Network/trafficManagerProfiles=200'.
+                                    Can be specified more than once for multiple values
+  -?|-h|--help                      Show help information.
 ```
-You can specify the above values more than once on the command line to add multiple locations / subscriptions / arm-limits
 
 ### Environment Variables
 https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-6.0#environment-variables-set-in-generated-launchsettingsjson
@@ -171,17 +173,17 @@ Ensure that you have updated your prometheus config to contain something like th
 
 ``` yaml
 scrape_configs:
-- job_name: 'azure-metrics'
+- job_name: 'azure-quota-metrics'
   scrape_interval: 60s
   scrape_timeout: 60s
   scheme: http
   metrics_path: '/metrics'
   static_configs:
-  - targets: ['azure-metrics.default.svc.cluster.local:8080']
+  - targets: ['azure-quota-metrics.default.svc.cluster.local:8080']
 ```
 
 ## Build
-docker build . -t knicknic/azure-metrics && docker push knicknic/azure-metrics
+docker build . -t knicknic/azure-quota-metrics && docker push knicknic/azure-quota-metrics
 
 ## Potentially useful sites?
 * https://learn.microsoft.com/en-us/rest/api/reserved-vm-instances/quotaapi?branch=capacity

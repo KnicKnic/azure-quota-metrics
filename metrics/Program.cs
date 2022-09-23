@@ -28,20 +28,18 @@ using metrics.Meters;
 
 public class Program
 {
-    [Option]
-    public string[] Subscription { get; set; } = { "7c5b2a0d-bcc2-41f7-bcea-c381f49e6d1f" };
+    [Required]
+    [Option(Description = "Required. The Subscription id(s).\nEx: '--Subscription abcdef01-0123-0123-0123-0123456789ab'.\nCan be specified more than once for multiple values")]
+    public string[] Subscription { get; set; }
 
-    [Option]
-    public string[] Location { get; set; } = { "EastUS" };
+    [Required]
+    [Option(Description ="Required. The region name(s).\nEx: '--Location EastUS'.\nCan be specified more than once for multiple values")]
+    public string[] Location { get; set; }
 
-    // use to use node label's 
-    // topology.kubernetes.io/region: westus2
-    [Option(ShortName = "e")]
-    public string? LocationViaEnvironment { get; set; }
     // should be in form of
     // Microsoft.Network/trafficManagerProfiles=200
-    [Option]
-    public string[] ArmLimit { get; set; } = { "Microsoft.Network/trafficManagerProfiles=200" };
+    [Option(Description = "Optional. Additional ARM type(s) to monitor <ArmType=LimitValue>.\nEx: '--ArmLimit Microsoft.Network/trafficManagerProfiles=200'.\nCan be specified more than once for multiple values")]
+    public string[] ArmLimit { get; set; }
 
     public static int Main(string[] args) => CommandLineApplication.Execute<Program>(args);
 
@@ -59,12 +57,6 @@ public class Program
 
         var credential = new DefaultAzureCredential();
         ArmClient client = new ArmClient(credential);
-
-        // override location if we get it via environment variable
-        if (LocationViaEnvironment != null)
-        {
-            Location = new string[] { Environment.GetEnvironmentVariable(LocationViaEnvironment) };
-        }
 
         var subscriptions = this.Subscription.Select(subscription => client.GetSubscriptionResource(new Azure.Core.ResourceIdentifier("/subscriptions/" + subscription))).ToArray();
 
