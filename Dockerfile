@@ -9,7 +9,7 @@ RUN set -x && dotnet build metrics.sln -c "Release" -o "/build"
 
 
 # Use the SDK image to create the nonroot user and group
-FROM mcr.microsoft.com/dotnet/aspnet:7.0.0-cbl-mariner2.0-amd64@sha256:afe5869ab9c54f93943597441cf19e60a81c4b6d2676e207b9123dd6aa113311 AS users
+FROM mcr.microsoft.com/dotnet/aspnet:7.0.1-cbl-mariner2.0-amd64@sha256:c986c1bb3bb963d7d66fc6517f428948affdd6b5efc6a9dbd9e4a31fc77a4df1 AS users
 RUN tdnf install shadow-utils -y && \
   tdnf clean all
 
@@ -20,7 +20,7 @@ COPY --from=users /etc/group /etc/group
 COPY --from=users /etc/passwd /etc/passwd
 
 # Copy the published application
-FROM mcr.microsoft.com/dotnet/aspnet:7.0.0-cbl-mariner2.0-amd64@sha256:afe5869ab9c54f93943597441cf19e60a81c4b6d2676e207b9123dd6aa113311 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:7.0.1-cbl-mariner2.0-amd64@sha256:c986c1bb3bb963d7d66fc6517f428948affdd6b5efc6a9dbd9e4a31fc77a4df1 AS runtime
 
 COPY --from=nonroot / /
 
