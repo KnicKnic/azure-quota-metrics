@@ -13,7 +13,7 @@
     <PackageReference Include="Azure.ResourceManager.Compute" Version="1.0.1" />
     <PackageReference Include="Azure.ResourceManager.Network" Version="1.1.0" />
     <PackageReference Include="Azure.ResourceManager.Reservations" Version="1.1.0" />
-    <PackageReference Include="Azure.ResourceManager.Storage" Version="1.0.0" />
+    <PackageReference Include="Azure.ResourceManager.Storage" Version="1.1.1" />
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="4.0.2" />
     <PackageReference Include="Microsoft.Azure.Management.Quota" Version="1.0.0-preview" />
     <PackageReference Include="Microsoft.Azure.Management.Reservations" Version="1.15.0-preview" />
