@@ -8,12 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Management.Authorization" Version="2.13.0-preview" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Azure.Identity" Version="1.8.2" />
     <PackageReference Include="Azure.ResourceManager.Compute" Version="1.0.1" />
-    <PackageReference Include="Azure.ResourceManager.Network" Version="1.1.0" />
+    <PackageReference Include="Azure.ResourceManager.Network" Version="1.1.1" />
     <PackageReference Include="Azure.ResourceManager.Reservations" Version="1.1.0" />
-    <PackageReference Include="Azure.ResourceManager.Storage" Version="1.0.0" />
+    <PackageReference Include="Azure.ResourceManager.Storage" Version="1.1.1" />
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="4.0.2" />
     <PackageReference Include="Microsoft.Azure.Management.Quota" Version="1.0.0-preview" />
     <PackageReference Include="Microsoft.Azure.Management.Reservations" Version="1.15.0-preview" />
@@ -21,7 +21,7 @@
     <PackageReference Include="Serilog" Version="2.12.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
-    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="7.0.0" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="7.0.1" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
   </ItemGroup>
 
