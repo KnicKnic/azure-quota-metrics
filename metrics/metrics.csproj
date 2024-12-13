@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Management.Authorization" Version="2.13.0-preview" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
     <PackageReference Include="Azure.Identity" Version="1.8.2" />
     <PackageReference Include="Azure.ResourceManager.Compute" Version="1.0.1" />
     <PackageReference Include="Azure.ResourceManager.Network" Version="1.1.1" />
